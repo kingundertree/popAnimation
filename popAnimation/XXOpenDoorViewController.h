@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "XXRootViewController.h"
 
 @interface XXOpenDoorViewController : UIViewController
 

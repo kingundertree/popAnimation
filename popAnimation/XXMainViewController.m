@@ -9,28 +9,76 @@
 #import "XXMainViewController.h"
 #import "XXOpenDoorViewController.h"
 #import "XXOpenDoorByPopViewController.h"
+#import "XXBackGoundColorByPopViewController.h"
+#import "XXBoundsViewController.h"
+#import "XXOpacityViewController.h"
+#import "XXPositionViewController.h"
+#import "XXRotationViewController.h"
+#import "XXScaleViewController.h"
+#import "XXSizeViewController.h"
+#import "XXSubscaleViewController.h"
+#import "XXSubtranslationViewController.h"
+#import "XXTranslationViewController.h"
+#import "XXCombineViewController.h"
 
 @interface XXMainViewController ()
-
+@property(nonatomic, strong) NSArray *cellArr;
 @end
 
 @implementation XXMainViewController
+@synthesize cellClassType;
+@synthesize cellArr;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.cellArr = [[NSArray alloc] initWithObjects:@"OPENDOORNORMALVIEW",@"OPENDOORBYPOPVIEW",@"BACKGOUNDCOLORVIEW",@"BOUNDSVIEW",@"OPACITYVIEW",@"POSITIONVIEW",@"ROTATIONVIEW",@"SCALEVIEW",@"SIZEVIEW",@"SUBSCALEVIEW",@"SUBTRANSLATIONVIEW",@"TRANSLATIONVIEW",@"COMBINEVIEW", nil];
     }
     return self;
 }
 
++ (Class)classForType:(CellClassType)cellType{
+    switch (cellType) {
+        case OPENDOORNORMALVIEW:
+            return [XXOpenDoorViewController class];
+        case OPENDOORBYPOPVIEW:
+            return [XXOpenDoorByPopViewController class];
+        case BACKGOUNDCOLORVIEW:
+            return [XXBackGoundColorByPopViewController class];
+        case BOUNDSVIEW:
+            return [XXBoundsViewController class];
+        case OPACITYVIEW:
+            return [XXOpacityViewController class];
+        case POSITIONVIEW:
+            return [XXPositionViewController class];
+        case ROTATIONVIEW:
+            return [XXRotationViewController class];
+        case SCALEVIEW:
+            return [XXScaleViewController class];
+        case SIZEVIEW:
+            return [XXSizeViewController class];
+        case SUBSCALEVIEW:
+            return [XXSubscaleViewController class];
+        case SUBTRANSLATIONVIEW:
+            return [XXSubtranslationViewController class];
+        case TRANSLATIONVIEW:
+            return [XXTranslationViewController class];
+        case COMBINEVIEW:
+            return [XXCombineViewController class];
+        default:
+            return nil;
+    }
+    
+    return nil;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-//    self.title = @"Pop Animation";
-    self.navigationController.navigationBarHidden = YES;
+    self.title = @"Pop Animation";
+//    self.navigationController.navigationBarHidden = YES;
     
     UITableView *tableList = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     tableList.dataSource = self;
@@ -41,7 +89,7 @@
 #pragma mark -UITableViewDelegate
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 2;
+    return [self.cellArr count];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
     return 44;
@@ -54,21 +102,14 @@
     }else{
         cell = [tableView dequeueReusableCellWithIdentifier:identify];
     }
-    if (indexPath.row == 0) {
-        cell.textLabel.text = @"openDoor";
-    }else{
-        cell.textLabel.text = @"openDoor By pop";
-    }
+    cell.textLabel.text = [NSString stringWithFormat:@"%@",[[self.cellArr objectAtIndex:indexPath.row] lowercaseString]];
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    if (indexPath.row == 0) {
-        XXOpenDoorViewController *openDoorVC = [[XXOpenDoorViewController alloc] init];
-        [self.navigationController pushViewController:openDoorVC animated:YES];
-    }else{
-        XXOpenDoorByPopViewController *openDoorByPopVC = [[XXOpenDoorByPopViewController alloc] init];
-        [self.navigationController pushViewController:openDoorByPopVC animated:YES];
-    }
+    Class cellClass = [XXMainViewController classForType:indexPath.row];
+    UIViewController *cellView = [(UIViewController *)[cellClass alloc] init];
+    cellView.title = [[self.cellArr objectAtIndex:indexPath.row] lowercaseString];
+    [self.navigationController pushViewController:cellView animated:YES];
 }
 - (void)didReceiveMemoryWarning
 {

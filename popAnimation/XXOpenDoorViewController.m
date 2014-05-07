@@ -47,13 +47,6 @@
     rightView.tag = 11;
     [self.view addSubview:rightView];
 
-    UIButton *backBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    [backBtn addTarget:self action:@selector(back:) forControlEvents:UIControlEventTouchUpInside];
-    backBtn.frame = CGRectMake(0, 30, 60, 40);
-    [backBtn setTitle:@"Back" forState:UIControlStateNormal];
-    [backBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.view addSubview:backBtn];
-
     [self performSelector:@selector(openDoor) withObject:nil afterDelay:1.0];
 }
 
